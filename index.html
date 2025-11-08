@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Is My Cat Real?</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #020202 0%, #101020 100%);
+    color: #00ffcc;
+    font-family: "Courier New", monospace;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+    color: #00ffe6;
+    text-shadow: 0 0 15px #00ffe6;
+  }
+
+  input[type="file"] {
+    margin: 20px 0;
+    color: #00ffcc;
+    background: transparent;
+    border: 1px dashed #00ffcc;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  #progressContainer {
+    width: 300px;
+    height: 20px;
+    background: #003333;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+    display: none;
+  }
+
+  #progressBar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #00ffe6, #00cc99);
+    transition: width 0.3s ease;
+  }
+
+  #status {
+    margin-top: 20px;
+    color: #00ffcc;
+    opacity: 0.8;
+  }
+
+  #result {
+    margin-top: 40px;
+    font-size: 2rem;
+    color: #ffffff;
+    text-shadow: 0 0 10px #00ffe6;
+    display: none;
+  }
+</style>
+</head>
+<body>
+  <h1>Is My Cat Real?</h1>
+  <input type="file" id="fileInput" accept="image/*" />
+  <div id="progressContainer">
+    <div id="progressBar"></div>
+  </div>
+  <p id="status"></p>
+  <div id="result">Maybe.</div>
+
+  <!-- Background sci-fi hum -->
+  <audio id="bgHum" src="bg_hum.mp3" preload="auto" loop></audio>
+
+  <script>
+    const fileInput = document.getElementById("fileInput");
+    const progressContainer = document.getElementById("progressContainer");
+    const progressBar = document.getElementById("progressBar");
+    const status = document.getElementById("status");
+    const result = document.getElementById("result");
+    const bgHum = document.getElementById("bgHum");
+
+    const steps = [
+      "Analyzing fur density...",
+      "Measuring purr frequency...",
+      "Scanning tail vectors...",
+      "Cross-checking whisker alignment...",
+      "Consulting neural networks...",
+      "Running final uncertainty algorithm..."
+    ];
+
+    fileInput.addEventListener("change", () => {
+      const file = fileInput.files[0];
+      if (!file) return;
+      progressContainer.style.display = "block";
+      status.textContent = "Initializing AI core...";
+      bgHum.play().catch(() => {});
+
+      let progress = 0;
+      let stepIndex = 0;
+      const interval = setInterval(() => {
+        progress += Math.random() * 15;
+        if (progress > 100) progress = 100;
+        progressBar.style.width = progress + "%";
+
+        if (progress >= (stepIndex + 1) * (100 / steps.length) && stepIndex < steps.length) {
+          status.textContent = steps[stepIndex];
+          stepIndex++;
+        }
+
+        if (progress >= 100) {
+          clearInterval(interval);
+          progressBar.style.width = "100%";
+          status.textContent = "Determining authenticity...";
+          setTimeout(() => {
+            progressContainer.style.display = "none";
+            status.style.display = "none";
+            result.style.display = "block";
+            bgHum.pause();
+          }, 2000);
+        }
+      }, 800);
+    });
+  </script>
+</body>
+</html>
